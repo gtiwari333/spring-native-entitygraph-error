@@ -1,108 +1,80 @@
-Getting following error
+Getting following error during native   build
+./mvnw native:compile -Pnative
 
-org.springframework.dao.InvalidDataAccessApiUsageException: The EntityGraph-Feature requires at least a JPA 2.1 persistence provider
+
+`Fatal error: java.lang.TypeNotPresentException: Type kotlinx.serialization.StringFormat not present`
 
 
+It goes away if i manually add the following dependency:
+```
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-serialization-core-jvm</artifactId>
+            <version>1.4.1</version>
+        </dependency>
+```
+
+Error detail:
 ``` 
-:~/Downloads/demo$ target/demo
+:~/Downloads/demo$  ./mvnw native:compile -Pnative
+...
+...
+Processing of field org.springframework.web.servlet.support.RequestContext#jstlPresent skipped due the following error : org/graalvm/nativeimage/hosted/FieldValueTransformer
+[2/7] Performing analysis...  [**]                                                                      (20.5s @ 3.92GB)
+  15,145 (93.28%) of 16,236 classes reachable
+  24,813 (68.24%) of 36,362 fields reachable
+  71,654 (68.76%) of 104,206 methods reachable
+     781 classes,   145 fields, and 2,703 methods registered for reflection
 
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::            (v3.0.0-RC1)
-
-2022-10-22T11:18:10.616-05:00  INFO 81456 --- [           main] com.example.demo.DemoApplication         : Starting AOT-processed DemoApplication using Java 17.0.4 on pop-os with PID 81456 (/home/gbuntu/Downloads/demo(1)/demo/target/demo started by gbuntu in /home/gbuntu/Downloads/demo(1)/demo)
-2022-10-22T11:18:10.616-05:00  INFO 81456 --- [           main] com.example.demo.DemoApplication         : No active profile set, falling back to 1 default profile: "default"
-2022-10-22T11:18:10.630-05:00  INFO 81456 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2022-10-22T11:18:10.633-05:00  INFO 81456 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:b1ccbb4f-8685-4dae-aa91-48ab4a0a0521 user=SA
-2022-10-22T11:18:10.633-05:00  INFO 81456 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2022-10-22T11:18:10.634-05:00  INFO 81456 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2022-10-22T11:18:10.635-05:00  INFO 81456 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.1.4.Final
-2022-10-22T11:18:10.636-05:00  WARN 81456 --- [           main] org.hibernate.orm.deprecation            : HHH90000021: Encountered deprecated setting [javax.persistence.sharedCache.mode], use [jakarta.persistence.sharedCache.mode] instead
-2022-10-22T11:18:10.638-05:00  INFO 81456 --- [           main] SQL dialect                              : HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
-2022-10-22T11:18:10.642-05:00  WARN 81456 --- [           main] o.h.id.enhanced.OptimizerFactory         : HHH000322: Unable to instantiate specified optimizer [pooled], falling back to noop
-2022-10-22T11:18:10.642-05:00  WARN 81456 --- [           main] o.h.id.enhanced.OptimizerFactory         : HHH000322: Unable to instantiate specified optimizer [pooled], falling back to noop
-2022-10-22T11:18:10.645-05:00  INFO 81456 --- [           main] o.h.tuple.entity.EntityMetamodel         : HHH000157: Lazy property fetching available for: com.example.demo.Note
-2022-10-22T11:18:10.647-05:00  INFO 81456 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2022-10-22T11:18:10.647-05:00  INFO 81456 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2022-10-22T11:18:10.665-05:00 ERROR 81456 --- [           main] o.s.boot.SpringApplication               : Application run failed
-
-org.springframework.dao.InvalidDataAccessApiUsageException: The EntityGraph-Feature requires at least a JPA 2.1 persistence provider
-        at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:371) ~[na:na]
-        at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:235) ~[na:na]
-        at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:550) ~[demo:na]
-        at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61) ~[na:na]
-        at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:242) ~[na:na]
-        at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:152) ~[na:na]
-        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[demo:6.0.0-RC2]
-        at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:163) ~[na:na]
-        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[demo:6.0.0-RC2]
-        at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[na:na]
-        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[demo:6.0.0-RC2]
-        at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:218) ~[na:na]
-        at com.example.demo.$Proxy51.findAll(Unknown Source) ~[demo:na]
-        at com.example.demo.AService.ctxRefreshed(AService.java:16) ~[demo:na]
-        at java.lang.reflect.Method.invoke(Method.java:568) ~[demo:na]
-        at org.springframework.context.event.ApplicationListenerMethodAdapter.doInvoke(ApplicationListenerMethodAdapter.java:343) ~[demo:na]
-        at org.springframework.context.event.ApplicationListenerMethodAdapter.processEvent(ApplicationListenerMethodAdapter.java:228) ~[demo:na]
-        at org.springframework.context.event.ApplicationListenerMethodAdapter.onApplicationEvent(ApplicationListenerMethodAdapter.java:165) ~[demo:na]
-        at org.springframework.context.event.SimpleApplicationEventMulticaster.doInvokeListener(SimpleApplicationEventMulticaster.java:176) ~[na:na]
-        at org.springframework.context.event.SimpleApplicationEventMulticaster.invokeListener(SimpleApplicationEventMulticaster.java:169) ~[na:na]
-        at org.springframework.context.event.SimpleApplicationEventMulticaster.multicastEvent(SimpleApplicationEventMulticaster.java:143) ~[na:na]
-        at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:413) ~[demo:6.0.0-RC2]
-        at org.springframework.context.support.AbstractApplicationContext.publishEvent(AbstractApplicationContext.java:370) ~[demo:6.0.0-RC2]
-        at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:936) ~[demo:6.0.0-RC2]
-        at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:587) ~[demo:6.0.0-RC2]
-        at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:730) ~[demo:3.0.0-RC1]
-        at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:432) ~[demo:3.0.0-RC1]
-        at org.springframework.boot.SpringApplication.run(SpringApplication.java:308) ~[demo:3.0.0-RC1]
-        at org.springframework.boot.SpringApplication.run(SpringApplication.java:1302) ~[demo:3.0.0-RC1]
-        at org.springframework.boot.SpringApplication.run(SpringApplication.java:1291) ~[demo:3.0.0-RC1]
-        at com.example.demo.DemoApplication.main(DemoApplication.java:20) ~[demo:na]
-Caused by: java.lang.IllegalArgumentException: The EntityGraph-Feature requires at least a JPA 2.1 persistence provider
-        at org.springframework.util.Assert.isTrue(Assert.java:121) ~[na:na]
-        at org.springframework.data.jpa.repository.query.Jpa21Utils.tryGetFetchGraph(Jpa21Utils.java:103) ~[na:na]
-        at org.springframework.data.jpa.repository.query.Jpa21Utils.getFetchGraphHint(Jpa21Utils.java:76) ~[na:na]
-        at org.springframework.data.jpa.repository.support.DefaultQueryHints.lambda$getFetchGraphs$0(DefaultQueryHints.java:101) ~[na:na]
-        at org.springframework.data.util.Optionals.lambda$mapIfAllPresent$5(Optionals.java:191) ~[na:na]
-        at java.util.Optional.map(Optional.java:260) ~[demo:na]
-        at org.springframework.data.util.Optionals.lambda$mapIfAllPresent$6(Optionals.java:191) ~[na:na]
-        at java.util.Optional.flatMap(Optional.java:289) ~[demo:na]
-        at org.springframework.data.util.Optionals.mapIfAllPresent(Optionals.java:191) ~[na:na]
-        at org.springframework.data.jpa.repository.support.DefaultQueryHints.getFetchGraphs(DefaultQueryHints.java:100) ~[na:na]
-        at org.springframework.data.jpa.repository.support.DefaultQueryHints.combineHints(DefaultQueryHints.java:94) ~[na:na]
-        at org.springframework.data.jpa.repository.support.DefaultQueryHints.forEach(DefaultQueryHints.java:90) ~[na:na]
-        at org.springframework.data.jpa.repository.support.SimpleJpaRepository.applyQueryHints(SimpleJpaRepository.java:832) ~[demo:na]
-        at org.springframework.data.jpa.repository.support.SimpleJpaRepository.applyRepositoryMethodMetadata(SimpleJpaRepository.java:825) ~[demo:na]
-        at org.springframework.data.jpa.repository.support.SimpleJpaRepository.getQuery(SimpleJpaRepository.java:748) ~[demo:na]
-        at org.springframework.data.jpa.repository.support.SimpleJpaRepository.getQuery(SimpleJpaRepository.java:726) ~[demo:na]
-        at org.springframework.data.jpa.repository.support.SimpleJpaRepository.findAll(SimpleJpaRepository.java:405) ~[demo:na]
-        at java.lang.reflect.Method.invoke(Method.java:568) ~[demo:na]
-        at org.springframework.data.repository.core.support.RepositoryMethodInvoker$RepositoryFragmentMethodInvoker.lambda$new$0(RepositoryMethodInvoker.java:289) ~[na:na]
-        at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:137) ~[demo:na]
-        at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:121) ~[demo:na]
-        at org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:516) ~[demo:na]
-        at org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:285) ~[na:na]
-        at org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:628) ~[na:na]
-        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[demo:6.0.0-RC2]
-        at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:160) ~[na:na]
-        at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:135) ~[na:na]
-        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[demo:6.0.0-RC2]
-        at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:77) ~[na:na]
-        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[demo:6.0.0-RC2]
-        at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) ~[na:na]
-        at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:388) ~[demo:6.0.0-RC2]
-        at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[demo:6.0.0-RC2]
-        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[demo:6.0.0-RC2]
-        at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:137) ~[na:na]
-        ... 25 common frames omitted
-
-2022-10-22T11:18:10.665-05:00  INFO 81456 --- [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2022-10-22T11:18:10.666-05:00  INFO 81456 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2022-10-22T11:18:10.666-05:00  INFO 81456 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+Fatal error: java.lang.TypeNotPresentException: Type kotlinx.serialization.StringFormat not present
+        at java.base/sun.reflect.generics.factory.CoreReflectionFactory.makeNamedType(CoreReflectionFactory.java:117)
+        at java.base/sun.reflect.generics.visitor.Reifier.visitClassTypeSignature(Reifier.java:125)
+        at java.base/sun.reflect.generics.tree.ClassTypeSignature.accept(ClassTypeSignature.java:49)
+        at java.base/sun.reflect.generics.reflectiveObjects.LazyReflectiveObjectGenerator.reifyBounds(LazyReflectiveObjectGenerator.java:65)
+        at java.base/sun.reflect.generics.reflectiveObjects.TypeVariableImpl.getBounds(TypeVariableImpl.java:125)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.reflect.hosted.ReflectionDataBuilder.makeTypeReachable(ReflectionDataBuilder.java:521)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.reflect.hosted.ReflectionDataBuilder.makeTypeReachable(ReflectionDataBuilder.java:529)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.reflect.hosted.ReflectionDataBuilder.registerTypesForClass(ReflectionDataBuilder.java:412)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.reflect.hosted.ReflectionDataBuilder.processMethodMetadata(ReflectionDataBuilder.java:267)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.reflect.hosted.ReflectionDataBuilder.duringAnalysis(ReflectionDataBuilder.java:187)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.reflect.hosted.ReflectionFeature.duringAnalysis(ReflectionFeature.java:238)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.hosted.NativeImageGenerator.lambda$runPointsToAnalysis$10(NativeImageGenerator.java:734)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.hosted.FeatureHandler.forEachFeature(FeatureHandler.java:78)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.hosted.NativeImageGenerator.lambda$runPointsToAnalysis$11(NativeImageGenerator.java:734)
+        at org.graalvm.nativeimage.pointsto/com.oracle.graal.pointsto.PointsToAnalysis.runAnalysis(PointsToAnalysis.java:755)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.hosted.NativeImageGenerator.runPointsToAnalysis(NativeImageGenerator.java:731)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.hosted.NativeImageGenerator.doRun(NativeImageGenerator.java:564)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.hosted.NativeImageGenerator.run(NativeImageGenerator.java:521)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.hosted.NativeImageGeneratorRunner.buildImage(NativeImageGeneratorRunner.java:407)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.hosted.NativeImageGeneratorRunner.build(NativeImageGeneratorRunner.java:585)
+        at org.graalvm.nativeimage.builder/com.oracle.svm.hosted.NativeImageGeneratorRunner.main(NativeImageGeneratorRunner.java:128)
+Caused by: java.lang.ClassNotFoundException: kotlinx.serialization.StringFormat
+        at java.base/java.net.URLClassLoader.findClass(URLClassLoader.java:445)
+        at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:587)
+        at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:520)
+        at java.base/java.lang.Class.forName0(Native Method)
+        at java.base/java.lang.Class.forName(Class.java:467)
+        at java.base/sun.reflect.generics.factory.CoreReflectionFactory.makeNamedType(CoreReflectionFactory.java:114)
+        ... 20 more
+------------------------------------------------------------------------------------------------------------------------
+                        1.4s (5.3% of total time) in 24 GCs | Peak RSS: 4.99GB | CPU load: 10.33
+========================================================================================================================
+Failed generating 'demo' after 25.8s.
+Error: Image build request failed with exit status 1
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  32.835 s
+[INFO] Finished at: 2022-10-22T11:31:52-05:00
+[INFO] ------------------------------------------------------------------------
+[WARNING] The requested profile "dev" could not be activated because it does not exist.
+[ERROR] Failed to execute goal org.graalvm.buildtools:native-maven-plugin:0.9.16:compile (default-cli) on project demo: Execution of /home/gbuntu/.sdkman/candidates/java/22.2.r17-grl/bin/native-image -cp /home/gbuntu/Downloads/demo(1)/demo/target/classes:/home/gbuntu/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.14.0-rc2/jackson-core-2.14.0-rc2.jar:/home/gbuntu/.m2/repository/io/micrometer/micrometer-commons/1.10.0-RC1/micrometer-commons-1.10.0-RC1.jar:/home/gbuntu/.m2/repository/org/springframework/spring-webmvc/6.0.0-RC2/spring-webmvc-6.0.0-RC2.jar:/home/gbuntu/.m2/repository/org/springframework/boot/spring-boot-starter-tomcat/3.0.0-RC1/spring-boot-starter-tomcat-3.0.0-RC1.jar:/home/gbuntu/.m2/repository/org/springframework/boot/spring-boot-autoconfigure/3.0.0-RC1/spring-boot-autoconfigure-3.0.0-RC1.jar:/home/gbuntu/.m2/repository/org/springframework/boot/spring-boot-starter-json/3.0.0-RC1/spring-boot-starter-json-3.0.0-RC1.jar:/home/gbuntu/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.14.0-rc2/jackson-datatype-jsr310-2.14.0-rc2.jar:/home/gbuntu/.m2/repository/org/springframework/spring-context/6.0.0-RC2/spring-context-6.0.0-RC2.jar:/home/gbuntu/.m2/repository/org/springframework/spring-core/6.0.0-RC2/spring-core-6.0.0-RC2.jar:/home/gbuntu/.m2/repository/org/apache/tomcat/embed/tomcat-embed-websocket/10.0.27/tomcat-embed-websocket-10.0.27.jar:/home/gbuntu/.m2/repository/org/springframework/boot/spring-boot/3.0.0-RC1/spring-boot-3.0.0-RC1.jar:/home/gbuntu/.m2/repository/org/springframework/boot/spring-boot-starter-web/3.0.0-RC1/spring-boot-starter-web-3.0.0-RC1.jar:/home/gbuntu/.m2/repository/jakarta/annotation/jakarta.annotation-api/2.0.0/jakarta.annotation-api-2.0.0.jar:/home/gbuntu/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.14.0-rc2/jackson-datatype-jdk8-2.14.0-rc2.jar:/home/gbuntu/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.14.0-rc2/jackson-databind-2.14.0-rc2.jar:/home/gbuntu/.m2/repository/org/springframework/boot/spring-boot-starter/3.0.0-RC1/spring-boot-starter-3.0.0-RC1.jar:/home/gbuntu/.m2/repository/org/springframework/boot/spring-boot-starter-logging/3.0.0-RC1/spring-boot-starter-logging-3.0.0-RC1.jar:/home/gbuntu/.m2/repository/io/micrometer/micrometer-observation/1.10.0-RC1/micrometer-observation-1.10.0-RC1.jar:/home/gbuntu/.m2/repository/org/apache/logging/log4j/log4j-api/2.19.0/log4j-api-2.19.0.jar:/home/gbuntu/.m2/repository/org/springframework/spring-aop/6.0.0-RC2/spring-aop-6.0.0-RC2.jar:/home/gbuntu/.m2/repository/org/slf4j/jul-to-slf4j/2.0.3/jul-to-slf4j-2.0.3.jar:/home/gbuntu/.m2/repository/org/apache/logging/log4j/log4j-to-slf4j/2.19.0/log4j-to-slf4j-2.19.0.jar:/home/gbuntu/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.14.0-rc2/jackson-annotations-2.14.0-rc2.jar:/home/gbuntu/.m2/repository/org/slf4j/slf4j-api/2.0.3/slf4j-api-2.0.3.jar:/home/gbuntu/.m2/repository/ch/qos/logback/logback-classic/1.4.4/logback-classic-1.4.4.jar:/home/gbuntu/.m2/repository/org/apache/tomcat/embed/tomcat-embed-core/10.0.27/tomcat-embed-core-10.0.27.jar:/home/gbuntu/.m2/repository/org/springframework/spring-expression/6.0.0-RC2/spring-expression-6.0.0-RC2.jar:/home/gbuntu/.m2/repository/com/fasterxml/jackson/module/jackson-module-parameter-names/2.14.0-rc2/jackson-module-parameter-names-2.14.0-rc2.jar:/home/gbuntu/.m2/repository/org/apache/tomcat/embed/tomcat-embed-el/10.0.27/tomcat-embed-el-10.0.27.jar:/home/gbuntu/.m2/repository/ch/qos/logback/logback-core/1.4.4/logback-core-1.4.4.jar:/home/gbuntu/.m2/repository/org/yaml/snakeyaml/1.33/snakeyaml-1.33.jar:/home/gbuntu/.m2/repository/org/springframework/spring-web/6.0.0-RC2/spring-web-6.0.0-RC2.jar:/home/gbuntu/.m2/repository/org/springframework/spring-beans/6.0.0-RC2/spring-beans-6.0.0-RC2.jar:/home/gbuntu/.m2/repository/org/springframework/spring-jcl/6.0.0-RC2/spring-jcl-6.0.0-RC2.jar --no-fallback -H:Path=/home/gbuntu/Downloads/demo(1)/demo/target -H:Name=demo -H:ConfigurationFileDirectories=/home/gbuntu/Downloads/demo(1)/demo/target/graalvm-reachability-metadata/43c268fc84dea0cd567d789edca6d3e5616be59b/ch.qos.logback/logback-classic/1.4.1,/home/gbuntu/Downloads/demo(1)/demo/target/graalvm-reachability-metadata/43c268fc84dea0cd567d789edca6d3e5616be59b/org.apache.tomcat.embed/tomcat-embed-core/10.0.20 returned non-zero result -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
 
 
 

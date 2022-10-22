@@ -8,11 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 class AService {
 
-    @Autowired
-    NoteRepo noteRepo;
-
     @EventListener
     public void ctxRefreshed(ContextRefreshedEvent evt) {
-        noteRepo.findAll();
+        System.out.println("HELLO WORLD!!!");
     }
 }

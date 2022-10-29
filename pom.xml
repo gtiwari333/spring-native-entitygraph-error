@@ -21,21 +21,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
-
-		<!-- after adding following two dependencies it creates a native executable that executes without any error -->
-		<!--
-		<dependency>
-			<groupId>org.jetbrains.kotlinx</groupId>
-			<artifactId>kotlinx-serialization-core-jvm</artifactId>
-			<version>1.4.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.rometools</groupId>
-			<artifactId>rome</artifactId>
-			<version>1.18.0</version>
-		</dependency>
-	-->
 	</dependencies>
 
 	<build>
